@@ -5,10 +5,6 @@
 #include <stdlib.h>  
   
   
-#ifdef _EiC  
-#define WIN32  
-#endif  
-  
 static CvMemStorage* storage_face = 0; //Memory Storage to Sore faces  
   
 static CvHaarClassifierCascade* cascade_face = 0;   
@@ -17,8 +13,8 @@ void detect_and_draw( IplImage* image );
   
 //Haar cascade - if your openc CV is installed at location C:/OpenCV2.0/  
 const char* cascade_name_face ="/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml";
-/////////////////////////////////////////////////////////////////////////////////  
   
+
 int main( int argc, char** argv )  
 {  
  	IplImage  *image =0;  

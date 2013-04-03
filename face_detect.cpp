@@ -1,5 +1,3 @@
-// OpenCV Sample Application: facedetect.c
-
 // Include header files
 #include "cv.h"
 #include "highgui.h"
