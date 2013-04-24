@@ -43,6 +43,7 @@ def getGaborImages(image):
 
 
 def show_dataset():
+	
 	root_dir = '/home/varun/Projects/FEAR/Dataset/'
 
 	image_root = root_dir + 'cohn-kanade-images'
@@ -53,7 +54,9 @@ def show_dataset():
 	landmark1_list = os.listdir(landmarks_root)
 	landmark1_list.sort()
 
-	for f1 in image1_list:
+	print len(image1_list)
+	
+	for f1 in image1_list[:-5]:
 		image1 = image_root + '/' + f1
 		landmark1 = landmarks_root + '/' + f1
 
@@ -63,7 +66,7 @@ def show_dataset():
 		landmark2_list = os.listdir(landmark1)
 		landmark2_list.sort()
 		
-		for f2 in image2_list:
+		for f2 in image2_list[]:
 				image2 = image1 + '/' + f2
 				landmark2 = landmark1 + '/' + f2
 
