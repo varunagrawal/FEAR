@@ -6,11 +6,9 @@ face_cascade = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt
 def detect_face(image):
 	#Load the classifiers
 	haarFace = Load(face_cascade)
-	print "Cascade loaded"
 
 	#Run the classifiers
 	storage = CreateMemStorage()
-	print "Memory allocated"
 	
 	detectedFace = HaarDetectObjects(image, haarFace, storage)
 	print "Faces detected"
@@ -42,7 +40,7 @@ def getImage():
 
 def main():
 	#image = getImage()
-	detect_face(LoadImage('Pictures/msit.jpg'))
+	detect_face(LoadImage('../sample.jpg'))
 	
 
 if __name__ == "__main__":

@@ -1,11 +1,14 @@
-import gabor
+#!/usr/bin/python
+
+import fear
 import cv
 import cv2
 import numpy
+import os
 
-def getGaborImages():
+def getGaborImages(image):
 
-	x = cv2.imread('../sample.jpg')
+	x = cv2.imread(image)
 
 	gabors = []
 
@@ -22,20 +25,48 @@ def getGaborImages():
 			kernel = gabor.gaborKernel(src, sigma, k, phi, psi)
 
 			h, w = src.shape
-			dst = cv.CreateMat(h, w, cv.CV_32FC1)
+			#dst = cv.CreateMat(h, w, cv.CV_32FC1)
 
-			cv.Filter2D(cv.fromarray(src), dst, kernel)
+			dst = cv2.filter2D(src, cv.CV_32F, kernel)
 
 			gabors.append(numpy.asarray(dst))
 
 
-	for i in gabors:
-		cv2.imshow("Gabor Image", i)
+	for i in range(len(gabors)):
+		cv2.imshow("Gabor Image", gabors[i])
+		#s = "Image_%s.jpg" % i
+		#cv2.imwrite(s, gabors[i])
 		cv2.waitKey(0)
 	
 	return gabors
 
 
+def show_dataset():
+	root_dir = '/home/varun/Projects/FEAR/Dataset/'
+
+	image_root = root_dir + 'cohn-kanade-images'
+	landmarks_root = root_dir + 'Landmarks'
+
+	l =  os.listdir(landmarks_root)
+	level1_list = os.listdir(image_root)
+	level1_list.sort()
+	level1 = image_root + '/' + level1_list[0]
+
+	level2_list = os.listdir(level1)
+	level2_list.sort()
+	level2 = level1 + '/' + level2_list[0]
+	
+	images = os.listdir(level2)
+	images.sort()
+
+
+	for d in level2_list:
+		for i in images:
+			a = cv2.imread(level2 + '/' + i)
+			cv2.imshow("Dataset image", a)
+			cv2.waitKey(0)
+		
 
 if __name__ == "__main__":
-	getGaborImages()
+	#getGaborImages('../sample.jpg')
+	show_dataset()
