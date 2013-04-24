@@ -32,7 +32,7 @@ def main():
 	landmark_file = '../Dataset/Landmarks/S010/001/S010_001_00000014_landmarks.txt'
 	points =  getPoints(landmark_file)
 
-	for point in points:
+	for x, y in points:
 		mark(image_file, point[0], point[1])
 
 if __name__ == "__main__":

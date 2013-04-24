@@ -33,11 +33,11 @@ def getGaborImages(image):
 			gabors.append(numpy.asarray(dst))
 
 
-	for i in range(len(gabors)):
+	"""for i in range(len(gabors)):
 		cv2.imshow("Gabor Image", gabors[i])
 		#s = "Image_%s.jpg" % i
 		#cv2.imwrite(s, gabors[i])
-		cv2.waitKey(0)
+		cv2.waitKey(0)"""
 	
 	return gabors
 
@@ -48,24 +48,42 @@ def show_dataset():
 	image_root = root_dir + 'cohn-kanade-images'
 	landmarks_root = root_dir + 'Landmarks'
 
-	l =  os.listdir(landmarks_root)
-	level1_list = os.listdir(image_root)
-	level1_list.sort()
-	level1 = image_root + '/' + level1_list[0]
+	image1_list = os.listdir(image_root)
+	image1_list.sort()
+	landmark1_list = os.listdir(landmarks_root)
+	landmark1_list.sort()
 
-	level2_list = os.listdir(level1)
-	level2_list.sort()
-	level2 = level1 + '/' + level2_list[0]
-	
-	images = os.listdir(level2)
-	images.sort()
+	for f1 in image1_list:
+		image1 = image_root + '/' + f1
+		landmark1 = landmarks_root + '/' + f1
+
+		image2_list = os.listdir(image1)
+		image2_list.sort()
+
+		landmark2_list = os.listdir(landmark1)
+		landmark2_list.sort()
+		
+		for f2 in image2_list:
+				image2 = image1 + '/' + f2
+				landmark2 = landmark1 + '/' + f2
+
+				images = os.listdir(image2)
+				images.sort()
+				
+				landmarks = os.listdir(landmark2)
+				landmarks.sort()
 
 
-	for d in level2_list:
-		for i in images:
-			a = cv2.imread(level2 + '/' + i)
-			cv2.imshow("Dataset image", a)
-			cv2.waitKey(0)
+				for i in range(len(images)):
+						image_file = image2 + '/' + images[i]
+						landmark_file = landmark2 + '/' + landmarks[i]
+
+						print "File: %s" % image_file
+			
+						points = utils.getPoints(landmark_file)
+
+						for x, y in points:
+								utils.mark(image_file, x, y)
 		
 
 if __name__ == "__main__":
