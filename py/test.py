@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 import fear
-import cv
+import utils
 import cv2
 import numpy
+import mlpy
 import os
 
 def getGaborImages(image):
