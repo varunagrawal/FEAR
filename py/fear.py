@@ -1,4 +1,4 @@
-# Module for FEAR utility functions functions
+# Module for FEAR utility functions
 # Author: Varun Agrawal
 
 import cv
@@ -54,7 +54,9 @@ def preprocess(img):
 	return out_f
 
 
-# Returns a Gabor kernel for an image
+# Generates a Gabor kernel for an image
+#Input  : Image, variance, kv, phi, phase
+#Return : Gabor Kernel
 def gaborKernel( img, sigma, kv, phi, psi ):
 
 	src = cv.fromarray(img)
@@ -77,6 +79,51 @@ def gaborKernel( img, sigma, kv, phi, psi ):
 			
 	return kernel
 	
+
+# Return a list of images filter with the corresponding Gabor kernel
+#Input   : File name
+#Returns : List of Gabor kernel filtered images
+def getGaborImages(image):
+
+	x = cv2.imread(image)
+
+	if x == None:
+		print "Error reading file"
+		return None
+	
+	gabors = []
+	
+	src = preprocess(x)
+
+	for i in range(2, 8, 2):
+		for u in range(6):
+			
+			k = i
+			phi = cv.CV_PI * u / 6.0
+			sigma = 2* cv.CV_PI
+			psi = 90
+
+			#print "Kernel %d %d" % (i, u)
+
+			#Get the kernel
+			kernel = gaborKernel(src, sigma, k, phi, psi)
+
+			#Filter the image with the kernel
+			dst = cv2.filter2D(src, cv.CV_32F, kernel)
+
+			gabors.append(numpy.asarray(dst))
+
+			
+	print "Gabor images generated"
+
+	"""for i in range(len(gabors)):
+		cv2.imshow("Gabor Image", gabors[i])
+		#s = "Image_%s.jpg" % i
+		#cv2.imwrite(s, gabors[i])
+		cv2.waitKey(0)"""
+	
+	return gabors
+
 
 
 if __name__ == "__main__":
