@@ -33,7 +33,7 @@ def main():
 	points =  getPoints(landmark_file)
 
 	for x, y in points:
-		mark(image_file, point[0], point[1])
+		mark(image_file, x, y)
 
 if __name__ == "__main__":
 	main()
