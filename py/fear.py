@@ -37,6 +37,7 @@ def detect_face(image):
 
 	return (x, y, lx, ly)
 
+
 #Locate eyes in image
 def detect_eyes(image):
 
@@ -70,6 +71,7 @@ def detect_eyes(image):
 	return ([leftx, lefty, leftlx, leftly], [rightx, righty, rightlx, rightly])
 
 
+
 #Locate Mouth in image
 def detect_mouth(image):
 
@@ -85,6 +87,7 @@ def detect_mouth(image):
 	return mouth
 	
 	
+
 # Preprocess image for filtering
 def preprocess(img):
 	

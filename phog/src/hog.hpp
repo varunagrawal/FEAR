@@ -95,7 +95,7 @@ Mat phog(Mat &Img, int no_divs, int no_levels, int no_bins )
 {
 
     int Level;    
-    Mat phog = hog(Img,1, no_bins);  //level 0 phog
+    Mat phog = hog(Img, 1, no_bins);  //level 0 phog
     for(Level=1; Level<no_levels; Level++)
     {
 
@@ -107,11 +107,11 @@ Mat phog(Mat &Img, int no_divs, int no_levels, int no_bins )
 
 Mat featureDetect(Mat img,int no_divs, int no_levels, int no_bins)
 {
-	cvtColor(img, img, CV_RGB2GRAY);
+    cvtColor(img, img, CV_RGB2GRAY);
     CascadeClassifier haarCascade(face_cascade_path);
     vector <Rect> detected;
 
-    haarCascade.detectMultiScale(img,detected, 1.1,3,CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_DO_ROUGH_SEARCH);
+    haarCascade.detectMultiScale(img, detected, 1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_DO_ROUGH_SEARCH);
     Mat face = img(detected[0]);
     Mat resized;
 
