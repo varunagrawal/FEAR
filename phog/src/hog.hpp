@@ -105,7 +105,7 @@ Mat phog(Mat &Img, int no_divs, int no_levels, int no_bins )
     return phog;
 }
 
-Mat featureDetect(Mat img,int no_divs, int no_levels, int no_bins)
+Mat featureDetect(Mat img, int no_divs, int no_levels, int no_bins)
 {
     cvtColor(img, img, CV_RGB2GRAY);
     CascadeClassifier haarCascade(face_cascade_path);
