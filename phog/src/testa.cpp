@@ -1,4 +1,5 @@
-#include "Library/hog.hpp"
+#include "fers.hpp"
+#include "svm.h"
 #include <fstream>
 #include <dirent.h>
 #include <map>
@@ -33,6 +34,8 @@ int main(int argc, char** argv)
     CvSVM SVM;
     SVM.load("Library/mixed_SVM_old.xml");
     
+    //Mat I = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+    //predict_expression(I, SVM, 2, 5, 26);
 
     char* dirname = argv[1];
     DIR *pDIR;
@@ -51,7 +54,7 @@ int main(int argc, char** argv)
                 string dirn = dirname;
                 string file = entry->d_name;
                 filePath = dirn + "/" + file;
-                
+                cout << filePath << endl;
                 Mat I = imread(filePath, CV_LOAD_IMAGE_COLOR);
                
                 Mat features;
@@ -71,6 +74,8 @@ int main(int argc, char** argv)
             }
         }
         closedir(pDIR);
-    }  
-    cout << num_correct << " out of " << TEST_SET; 
+	}
+	cout << num_correct << " out of " << TEST_SET;
+
+    cout << "Test complete" << endl;
 }
