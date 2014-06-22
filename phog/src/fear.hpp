@@ -5,7 +5,7 @@
 #include <string>
 
 #include "svm.h"
-#include "hog.hpp"
+#include "phog.hpp"
 
 using namespace std;
 using namespace cv;
@@ -15,7 +15,7 @@ void initialize(char* c, CvSVM& SVM)
 	SVM.load(c);
 }
 
-vector<Rect> faceDetect(Mat img)
+vector<Rect> face_detect(Mat img)
 {
     cvtColor(img, img, CV_RGB2GRAY);
 
@@ -27,7 +27,7 @@ vector<Rect> faceDetect(Mat img)
     return detected;
 }
 
-vector<Mat> resizeAndSplitFace(Mat img, vector<Rect> detected)
+vector<Mat> resize_and_split_face(Mat img, vector<Rect> detected)
 {
     cvtColor(img, img, CV_RGB2GRAY);
 
@@ -43,7 +43,7 @@ vector<Mat> resizeAndSplitFace(Mat img, vector<Rect> detected)
     return faceParts;
 }
 
-Mat featureDetect(Mat img, int no_divs, int no_levels, int no_bins)
+Mat feature_detect(Mat img, int no_divs, int no_levels, int no_bins)
 {
     Mat PHOG;
     PHOG = phog(img, no_divs, no_levels, no_bins);
@@ -51,33 +51,48 @@ Mat featureDetect(Mat img, int no_divs, int no_levels, int no_bins)
     return PHOG;
 }
 
-int predict_expression(Mat Img, CvSVM& topSVM, CvSVM& bottomSVM, int no_divs, int no_levels, int no_bins)
+vector<Mat> get_phog_features(Mat img, int no_divs, int no_levels, int no_bins)
 {
-    vector<Rect> faceRect = faceDetect(Img);
+    vector<Mat> features;
+
+    vector<Rect> faceRect = face_detect(img);
     
     if(faceRect.size() == 0)
-	return 0;
+	return features;
 
-    vector<Mat> faceParts = resizeAndSplitFace(Img, faceRect);
+    vector<Mat> faceParts = resize_and_split_face(img, faceRect);
 
-    Mat top_features  = featureDetect(faceParts[0], no_divs, no_levels, no_bins);
+    Mat top_features  = feature_detect(faceParts[0], no_divs, no_levels, no_bins);
+
+    Mat bottom_features  = feature_detect(faceParts[1], no_divs, no_levels, no_bins);
+
+    features.push_back(top_features);
+    features.push_back(bottom_features);
+
+    return features;
+}
+
+vector<int> predict_expression(Mat Img, CvSVM& topSVM, CvSVM& bottomSVM, int no_divs, int no_levels, int no_bins)
+{
+    vector<int> predictions;
+    
+    vector<Rect> faceRect = face_detect(Img);
+    
+    if(faceRect.size() == 0)
+	return predictions;
+
+    vector<Mat> faceParts = resize_and_split_face(Img, faceRect);
+
+    Mat top_features  = feature_detect(faceParts[0], no_divs, no_levels, no_bins);
     int top_prediction = topSVM.predict(top_features);
 
-    Mat bottom_features  = featureDetect(faceParts[0], no_divs, no_levels, no_bins);
+    Mat bottom_features  = feature_detect(faceParts[1], no_divs, no_levels, no_bins);
     int bottom_prediction = bottomSVM.predict(bottom_features);
-    
-    return top_prediction;
-}
 
-void save_model(svm_model *model, char* file)
-{
-    svm_save_model(file, model);
-}
+    predictions.push_back(top_prediction);
+    predictions.push_back(bottom_prediction);
 
-svm_model* load_model(char* loc)
-{
-    struct svm_model* SVM = svm_load_model(loc);
-    return SVM;
+    return predictions;
 }
 
 /*
@@ -120,28 +135,4 @@ double** fear_predict_probability(svm_model* SVM, Mat& data)
     }
 
     return prob_estimates;
-}
-
-void fear_test(Mat img, int no_divs, int no_levels, int no_bins)
-{
-    cvtColor(img, img, CV_RGB2GRAY);
-    
-    cout << "Starting test" << endl;
-    Mat PHOG;
-    PHOG = phog(img, no_divs, no_levels, no_bins);
-    
-    cout << "PHOG calculated!" << endl;
-
-    /*for(int i=0; i<PHOG.rows; i++)
-    {
-	for(int j=0; j<PHOG.cols; j++)
-	{
-	    if(isnan(PHOG.at<double>(i, j)))
-		cout << "Found nan at " << i << " " << j << endl;
-	    //cout << PHOG.at<double>(i, j) << " ";
-	}
-	//cout << endl;
-	}*/
-    cout << "Done" << endl;
-    
 }

@@ -4,9 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "fers.hpp"
-
-#define TRAIN_SET1 3080
+#include "fear.hpp"
 
 using namespace std;
 using namespace cv;

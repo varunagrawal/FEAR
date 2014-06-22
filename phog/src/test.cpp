@@ -3,7 +3,7 @@
 #include <map>
 #include <cmath>
 
-#include "fers.hpp"
+#include "fear.hpp"
 
 #define TEST_SET 750
 
