@@ -4,6 +4,7 @@
 #include<getopt.h>
 
 #include "fear.hpp"
+#include "fann.hpp"
 
 using namespace std;
 using namespace cv;
@@ -48,15 +49,16 @@ void train()
 {
     int divs = 2, levels = 5, bins = 26;
 
-    ifstream in("../dataset/cohn_data_final.txt");
+    ifstream in("../dataset/cohn_train_set.txt");
     string path = "../dataset/Images/train/";
 
-    const int TRAIN_SET = 649;
+    const int TRAIN_SET = 569;
 
     Mat trainingDataTop;
     Mat trainingDataBottom;
     Mat labels;
 
+    cout << "Starting" << endl;
     for(int i=0; i<TRAIN_SET; i++)
     {
 	int label;
@@ -73,21 +75,89 @@ void train()
 
 	Mat img = imread(filename, CV_LOAD_IMAGE_COLOR);
 
+	cout << i << endl;
+	//imshow("Loaded Image", img);
+	//waitKey(0);
+
 	vector<Mat> features = get_phog_features(img, divs, levels, bins);
 
 	trainingDataTop.push_back(features[0]);
 	trainingDataBottom.push_back(features[1]);
 
 	labels.push_back(label);
+
+	cout << filename << ": Done" << endl;
     }
 
     train_SVM(trainingDataTop, labels, get_file("top", divs, levels, bins));
     train_SVM(trainingDataBottom, labels, get_file("bottom", divs, levels, bins));
 }
 
+/****
+     Test classifiers on test set of Cohn-Kanade dataset
+ ***/
+void test()
+{
+    int divs = 2, levels = 5, bins = 26;
+
+    ifstream in("../dataset/cohn_test_set.txt");
+    string path = "../dataset/Images/test/";
+
+    const int TEST_SET = 80;
+
+    Mat testDataTop;
+    Mat testDataBottom;
+    int label;
+
+    CvSVM svm_top;
+    svm_top.load("phog_classifier_top_div2_lvl5_bins26.xml");
+	
+    int correct_count = 0;
+
+    cout << "Testing start" << endl;
+    for(int i=0; i<TEST_SET; i++)
+    {
+	string filename;
+	
+	in >> filename;
+
+	if(filename != "")
+	{
+	    in >> label;
+	}
+
+	filename = path + filename + ".png";
+
+	Mat img = imread(filename, CV_LOAD_IMAGE_COLOR);
+
+	cout << filename << endl;
+
+	vector<Mat> features = get_phog_features(img, divs, levels, bins);
+
+	testDataTop = features[0];
+	testDataBottom = features[1];
+	
+	/*
+	struct svm_model *svm_top = svm_load_model("");
+	struct svm_model *svm_bottom = svm_load_model("");
+
+	fear_predict_probability(svm_top, testDataTop);
+	fear_predict_probability(svm_bottom, testDataBottom);
+	*/
+
+	int prediction = svm_top.predict(testDataTop);
+	
+	cout << "Label: " << label << " Prediction: " << prediction << endl;
+	cout << filename << ": Done" << endl;
+    }
+
+}
+
 int main(int argc, char** argv)
 {      
     //train();
+    test();
+
     /*
     while(1)
     {

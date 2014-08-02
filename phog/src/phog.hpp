@@ -36,6 +36,9 @@ Mat hog(Mat &Img, int no_divs, int no_bins)
  
     int img_area = img.rows * img.cols;
 
+    imshow("Loaded image", img);
+    waitKey(1);
+    
     for(int m=0; m < N_DIVS; m++)
     {
         for(int n=0; n < N_DIVS; n++)
@@ -44,12 +47,12 @@ Mat hog(Mat &Img, int no_divs, int no_bins)
 	    {
                 for(int j=0; j<celly; j++)
                 {
-                    float px, py, grad, norm_grad, angle;
-                    float nth_bin;
+                    float px=0, py=0, grad=0, norm_grad=0, angle=0;
+                    float nth_bin=0;
 
                     px = static_cast<float>(Ix.at<int16_t>((m*cellx)+i, (n*celly)+j ));
                     py = static_cast<float>(Iy.at<int16_t>((m*cellx)+i, (n*celly)+j ));
-                    grad = static_cast<float>( std::sqrt( 1.0*(px*px) + (py*py) ) );
+                    grad = static_cast<float>( std::sqrt( 1.0*px*px + py*py ) );
                     norm_grad = grad / img_area;
                    
                     //Orientation
@@ -69,6 +72,7 @@ Mat hog(Mat &Img, int no_divs, int no_bins)
         }
     }  
 
+    //cout << "Normalization" << endl;
     //Normalization
     for(int i=0; i< N_DIVS*N_DIVS; i++)
     { 

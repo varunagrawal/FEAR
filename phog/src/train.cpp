@@ -25,9 +25,11 @@ void train(int TRAIN_SET, ifstream& in, string path, Mat& trainingData, Mat& lab
 	cout << "Loading image: " + filename << endl;
 
 	Mat img = imread(filename, CV_LOAD_IMAGE_COLOR);
- 	
+
+	cout << "Detecting..." << endl; 	
 	Mat features = featureDetect(img, 2, 5, 26);
-	cout << "Detecting..." << endl;
+
+	img.release();
 	
 	int expression = label;
 	trainingData.push_back(features);
@@ -41,7 +43,7 @@ void test()
     imshow("test image", img);
     waitKey(0);
 
-    fear_test(img, 2, 5, 26);
+    //fear_test(img, 2, 5, 26);
 
 }
 
@@ -75,9 +77,9 @@ int main(int argc, char **argv)
     /*****
 	  Train on Cohn-Kanade Dataset
     *****/
-    /*ifstream in("../dataset/cohn_data_final.txt");
+    ifstream in("../dataset/cohn_data_final.txt");
 
-    //train(TRAIN_SET, in, "../dataset/Images/", trainingData, labels);
+    train(TRAIN_SET, in, "../dataset/Images/", trainingData, labels);
 
     cout << "Training of Cohn done." << endl;
     
@@ -90,10 +92,9 @@ int main(int argc, char **argv)
     CvSVM SVM;
     SVM.train(trainingData, labels, Mat(), Mat(), params);
     
-    CvStatModel *model = new CvSVM(SVM);
-    model->save("trained_SVM.xml");
+    //CvStatModel *model = new CvSVM(SVM);
+    SVM.save("trained_SVM.xml");
     cout << "Training of SVM complete" << endl;
-    */
 
     test();
 

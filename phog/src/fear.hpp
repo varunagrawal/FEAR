@@ -136,3 +136,19 @@ double** fear_predict_probability(svm_model* SVM, Mat& data)
 
     return prob_estimates;
 }
+
+Mat featureDetect(Mat img, int no_divs, int no_levels, int no_bins)
+{
+    cvtColor(img, img, CV_RGB2GRAY);
+    CascadeClassifier haarCascade(face_cascade_path);
+    vector <Rect> detected;
+
+    haarCascade.detectMultiScale(img, detected, 1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_DO_ROUGH_SEARCH);
+    Mat face = img(detected[0]);
+    Mat resized;
+
+    resize(face, resized, Size(), 480.0/face.cols, 480.0/face.rows, INTER_AREA);
+    Mat PHOG;
+    PHOG = phog(resized,no_divs, no_levels, no_bins);
+    return PHOG;
+}
