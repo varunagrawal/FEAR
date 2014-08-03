@@ -36,8 +36,9 @@ Mat hog(Mat &Img, int no_divs, int no_bins)
  
     int img_area = img.rows * img.cols;
 
-    imshow("Loaded image", img);
-    waitKey(1);
+    //cout << "start phog" << endl;
+    //imshow("Loaded image", img);
+    //waitKey(1);
     
     for(int m=0; m < N_DIVS; m++)
     {

@@ -45,8 +45,10 @@ vector<Mat> resize_and_split_face(Mat img, vector<Rect> detected)
 
 Mat feature_detect(Mat img, int no_divs, int no_levels, int no_bins)
 {
-    Mat PHOG;
-    PHOG = phog(img, no_divs, no_levels, no_bins);
+    Mat resized;
+    resize(img, resized, Size(), 480.0/img.cols, 480.0/img.rows, INTER_AREA);
+
+    Mat PHOG = phog(resized, no_divs, no_levels, no_bins);
     
     return PHOG;
 }

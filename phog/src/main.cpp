@@ -130,7 +130,7 @@ void test()
 
 	Mat img = imread(filename, CV_LOAD_IMAGE_COLOR);
 
-	cout << filename << endl;
+	//cout << filename << endl;
 
 	vector<Mat> features = get_phog_features(img, divs, levels, bins);
 
@@ -155,8 +155,8 @@ void test()
 
 int main(int argc, char** argv)
 {      
-    //train();
-    test();
+    train();
+    //test();
 
     /*
     while(1)
