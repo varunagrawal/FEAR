@@ -150,6 +150,7 @@ Mat featureDetect(Mat img, int no_divs, int no_levels, int no_bins)
     Mat resized;
 
     resize(face, resized, Size(), 480.0/face.cols, 480.0/face.rows, INTER_AREA);
+
     Mat PHOG;
     PHOG = phog(resized,no_divs, no_levels, no_bins);
     return PHOG;
