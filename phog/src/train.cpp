@@ -62,15 +62,16 @@ int main(int argc, char **argv)
         string filename;
         in1 >> filename;
         if(filename != "")
-        
+        {
+
             int label;
             in1 >> label;
 	    
             filename = filename.insert(9,"000000");
             filename[0] = 'S';
             
-	    filename = "../dataset/Images/" + filename + ".png";
-	    Mat img = imread(filename, CV_LOAD_IMAGE_COLOR);
+	        filename = "../dataset/Images/" + filename + ".png";
+	        Mat img = imread(filename, CV_LOAD_IMAGE_COLOR);
  	    
             Mat features = featureDetect(img, 2, 5, 26);
             int expression = label;
@@ -86,11 +87,10 @@ int main(int argc, char **argv)
     params.svm_type = CvSVM::C_SVC;
     params.kernel_type = CvSVM::LINEAR;
     
-    CvSVM SVM;
-    SVM.train(trainingData, labels, Mat(), Mat(), params);
-    
-    CvStatModel *model = new CvSVM(SVM);
-    model->save("trained_SVM.xml");
+    CvSVM *svm;
+    svm->train(trainingData, labels, Mat(), Mat(), params);
+
+    svm->save("trained_SVM.xml");
     cout << "Trained :D" << endl;
 
     return 0;
