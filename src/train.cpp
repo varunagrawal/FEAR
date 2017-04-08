@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "hog.hpp"
+#include "../include/hog.hpp"
 
 #define TRAIN_SET1 3080
 #define TRAIN_SET2 649

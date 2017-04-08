@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "fers.hpp"
+#include "../include/fear.hpp"
 #include <iostream>
 
 using namespace std;
@@ -73,9 +73,11 @@ void load_file(GtkWidget *widget, gpointer data)
 void get_expression(GtkWidget *widget, gpointer data)
 {
 	int exp = 0;
-	
-	Mat Img = imread(file);
-	int prediction = predict_expression(Img, SVM_test, 2, 5, 26);
+
+	char* svm_weights ="mixed_SVM_old.xml";
+
+	Mat img = imread(file);
+	int prediction = predict_expression(img, svm_weights, 2, 5, 26);
 	cout << prediction << endl;
 	char* expression_image;
 		
@@ -165,9 +167,6 @@ int main(int argc, char* argv[])
 	gtk_box_pack_start(GTK_BOX(vbox), expression_label, FALSE, FALSE, 0);
 	
 	gtk_container_add(GTK_CONTAINER(window), vbox);
-
-	char* path="mixed_SVM_old.xml";
-	initialize(path, SVM_test);
 
 	int load_handler_id = g_signal_connect(G_OBJECT(load_button), "clicked", G_CALLBACK(load_file), NULL);
 	
