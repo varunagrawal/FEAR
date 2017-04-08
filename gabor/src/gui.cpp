@@ -4,7 +4,6 @@
 #include <cstring>
 #include <cstdlib>
 
-#include "cv.h"
 #include "fers.h"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"

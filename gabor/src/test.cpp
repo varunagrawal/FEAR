@@ -1,7 +1,7 @@
 #include<vector>
 #include "cv.h"
 #include "highgui.h"
-#include "gabor.h"
+#include "../../include/gabor.h"
 #include "/usr/include/opencv/cxcore.hpp"
 #include<cmath>
 #include<iostream>
